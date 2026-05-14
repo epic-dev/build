@@ -42,7 +42,7 @@ export const AppContextProvider: FC<{ children: React.ReactNode }> = ({ children
         pokemonReducer,
         { pokemons: [], favorite: [] },
     )
-    console.log('state', state)
+
     return <AppContext.Provider value={state}>
         <AppDispatchContext.Provider value={dispatch}>
             {children}
