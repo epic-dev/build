@@ -11,9 +11,11 @@ type Action =
     | { type: 'remove'; name: string }
     | { type: 'clear' };
 
-export const AppContext = createContext<State | null>(null)
+const initialState: State = { pokemons: [], favorite: [] }
+
+export const AppContext = createContext<State>(initialState)
 export const AppDispatchContext = createContext<React.Dispatch<Action>>(
-    () => undefined
+    () => { throw new Error('Dispatch context is used outside the Provider') }
 )
 
 export function pokemonReducer(state: State, action: Action): State {
@@ -40,7 +42,7 @@ export function pokemonReducer(state: State, action: Action): State {
 export const AppContextProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
     const [state, dispatch] = useReducer(
         pokemonReducer,
-        { pokemons: [], favorite: [] },
+        initialState,
     )
 
     return <AppContext.Provider value={state}>
