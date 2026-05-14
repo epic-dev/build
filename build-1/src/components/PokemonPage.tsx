@@ -70,17 +70,15 @@ const PokemonList: FC<IPokemonList> = ({ pokemons, filter, selectPokemon }) => {
     const poks = useMemo(() => {
         return filter ? pokemons?.filter((p) => { return p.name.includes(filter)}) : pokemons
     }, [pokemons, filter])
-    const memoizedSelect = useCallback(() => {
-        return selectPokemon
-    }, [])
+
     return <>
-        {poks?.map((pok: Pokemon) => <PokemonItem key={pok.name} pokemon={pok} onSelect={memoizedSelect} />)}
+        {poks?.map((pok: Pokemon) => <PokemonItem key={pok.name} pokemon={pok} onSelect={selectPokemon} />)}
     </>
 }
 
 interface IPokemonItem {
     pokemon: Pokemon
-    onSelect: () => (pok: Pokemon) => void
+    onSelect: (pok: Pokemon) => void
 }
 export const PokemonItem: FC<IPokemonItem> = React.memo(({ pokemon, onSelect }) => {
     const dispatch = useContext(AppDispatchContext)
@@ -96,7 +94,7 @@ export const PokemonItem: FC<IPokemonItem> = React.memo(({ pokemon, onSelect }) 
     }
     
     return <div>
-        <span onClick={() => {onSelect()(pokemon)}}>{pokemon.name}</span>
+        <span onClick={() => {onSelect(pokemon)}}>{pokemon.name}</span>
         <input type="checkbox" checked={isFavorite(pokemon.name)} onChange={() => toggleFavorite(pokemon.name)} />
     </div>
 })
