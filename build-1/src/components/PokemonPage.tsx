@@ -28,6 +28,7 @@ export const PokemonPage: FC<IPokemonPage> = () => {
     }, [])
     const fetchState = useFetchData<{ results: Pokemon[] }>(`pokemon?offset=${offset}`)
     const selectPokemon = useCallback((pok: Pokemon) => {
+        console.log('selected', pok.name)
         setSelectedPok(pok)
     }, [])
     const goBack = useCallback(() => {
@@ -84,19 +85,21 @@ interface IPokemonItem {
     pokemon: Pokemon
     onSelect: () => void
 }
-// export const PokemonItem: FC<IPokemonItem> = React.memo(({ pokemon, onSelect }) => {
-export const PokemonItem: FC<IPokemonItem> = ({ pokemon, onSelect }) => {
+export const PokemonItem: FC<IPokemonItem> = React.memo(({ pokemon, onSelect }) => {
     const dispatch = useContext(AppDispatchContext)
     const ctx = useContext(AppContext)
-    const isFavorite = (name: string) => {
-        return ctx?.favorite.includes(name)
-    }
-    const toggleFavorite = (name: PokemonName) => {
-        dispatch({ type: 'add', name })
-    }
+    const isFavorite = useCallback((name: string) => {
+        return ctx?.favorite.includes(name) ?? false
+    }, [ctx])
+    const toggleFavorite = useCallback((name: PokemonName) => {
+        const action = isFavorite(name) ? 'remove' : 'add'
+        dispatch({ type: action, name })
+    }, [ctx, dispatch, isFavorite])
+    const memoisedOnSelect = useCallback(() => onSelect(), [onSelect])
+    const memoisedToggleFavorite = useCallback(() => toggleFavorite(pokemon.name), [toggleFavorite, pokemon.name])
     return <div>
-        <span onClick={() => onSelect()}>{pokemon.name}</span>
-        <input type="checkbox" checked={isFavorite(pokemon.name)} onChange={() => toggleFavorite(pokemon.name)} />
+        <span onClick={memoisedOnSelect}>{pokemon.name}</span>
+        <input type="checkbox" checked={isFavorite(pokemon.name)} onChange={memoisedToggleFavorite} />
     </div>
-// })
-}
+})
+

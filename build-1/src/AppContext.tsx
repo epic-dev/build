@@ -26,7 +26,7 @@ export function pokemonReducer(state: State, action: Action): State {
         case "remove":
             return {
                 ...state,
-                favorite: [...state.favorite.toSpliced(state.favorite.indexOf(action.name))],
+                favorite: [...state.favorite.filter(n => n !== action.name)],
             }
         case "clear": return {
             ...state,
