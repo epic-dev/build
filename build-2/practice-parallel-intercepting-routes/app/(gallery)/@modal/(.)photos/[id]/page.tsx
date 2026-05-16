@@ -18,7 +18,7 @@ export default function PhotoModal({ params }: { params: Promise<{ id: string }>
         return () => {
             ref.current?.removeEventListener('close', goBackOnClose)
         }
-    }, [ref])
+    }, [])
     return <dialog ref={ref} closedby="any" open className="open:backdrop:bg-gray-600 top-[50%] left-[50%] translate-[-50%] border border-gray-100 p-48">
         <img src={`/images/${id}.png`} width={300} />
     </dialog>

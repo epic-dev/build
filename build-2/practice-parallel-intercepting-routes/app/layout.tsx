@@ -20,8 +20,6 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  modal: React.ReactNode;
-  info: React.ReactNode;
   children: React.ReactNode;
 }>) {
   return (

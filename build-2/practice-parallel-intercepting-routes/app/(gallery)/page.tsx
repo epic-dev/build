@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function Home({ modal }: { modal: React.ReactNode }) {
+export default function Home() {
   const images = [
     {
       id: '1',
